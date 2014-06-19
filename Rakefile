@@ -19,8 +19,8 @@ desc "Generate deb file for the gem and command-line tools"
 task :package do
   sh "mkdir -p build"
   sh "if [ -f *.gem ]; then rm *.gem; fi"
-  sh "gem build web-test-framework.gemspec && mv web-test-framework*.gem build/"
-  sh "cd build && fpm -s gem -t deb -n web-test-framework web-test-framework-*.gem"
+  sh "gem build web-test-framework.gemspec && mv *.gem build/"
+  sh "cd build && fpm -s gem -t deb -n rubygem-web-test-framework *.gem"
 end
 
 desc "Clean everything up"
