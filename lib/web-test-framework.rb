@@ -10,11 +10,18 @@ module WebTestFramework
 
     include NagiosSupport
 
-    def initialize(script_path, script_filename, port='98888')
-      @fixture_path = File.join(File.dirname(__FILE__), "fixtures")
-      @script = "cd #{script_path}; /usr/bin/ruby #{script_path}/#{script_filename}"
+    def initialize(script_filename, port='98888')
       @tempfile = Tempfile.new('tmp')
       @test_server = HTTPTestServer.new(port)
+      @script_filename = script_filename
+    end
+
+    def fixture_path
+      File.dirname(__FILE__)
+    end
+
+    def script_path
+      File.dirname(__FILE__)
     end
 
     def destroy
@@ -24,13 +31,13 @@ module WebTestFramework
 
     end
     def run_via_cli(args)
-      `#{@script} #{args}`
+      `cd #{script_path}; /usr/bin/ruby #{script_path}/#{@script_filename} #{args}`
     end
 
     def setup_test_server_with_fixture(fixture_file, response_code = 200)
       @test_server.start(['/']) do |request, response|
         response.status = response_code
-        response.body = File.read("#{@fixture_path}/#{fixture_file}")
+        response.body = File.read("#{fixture_path}/#{fixture_file}")
       end
     end
 
