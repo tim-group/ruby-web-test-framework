@@ -1,6 +1,4 @@
 require 'rubygems'
-$: << File.join(File.dirname(__FILE__), "..", "files")
-
 require 'tmpdir'
 require 'tempfile'
 require 'webrick'
@@ -12,8 +10,7 @@ module WebTestFramework
 
     include NagiosSupport
 
-    def initialize(script_filename, port='98888')
-      script_path = File.join(File.dirname(__FILE__), "..", "files")
+    def initialize(script_path, script_filename, port='98888')
       @fixture_path = File.join(File.dirname(__FILE__), "fixtures")
       @script = "cd #{script_path}; /usr/bin/ruby #{script_path}/#{script_filename}"
       @tempfile = Tempfile.new('tmp')
